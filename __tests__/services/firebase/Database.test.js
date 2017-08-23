@@ -1,12 +1,14 @@
 import { getAllRides, saveRideOffer, saveRideRequest } from '../../../src/services/firebase'
 import RidesResponse from '../../__mocks__/Fixtures/FirebaseRidesResponse.json'
+import ProfileResponse from '../../__mocks__/Fixtures/FirebaseProfileResponse.json'
 
 const mockRef = {
   remove: jest.fn(() => Promise.resolve(true)),
   push: jest.fn((ride) => Promise.resolve(ride)),
   child: () => ({
     once: () => Promise.resolve({ val: () => RidesResponse })
-  })
+  }),
+  once: () => Promise.resolve({ val: () => ProfileResponse })
 }
 
 const mockDatabase = {
@@ -15,7 +17,10 @@ const mockDatabase = {
 
 jest.mock('firebase', () => ({
   initializeApp: jest.fn(),
-  database: jest.fn(() => mockDatabase)
+  database: jest.fn(() => mockDatabase),
+  auth: () => ({
+    currentUser: { uid: 's29iF96rLqRIj1O9WZ2p2BjR59J3' }
+  })
 }))
 
 describe('Firebase database service', () => {

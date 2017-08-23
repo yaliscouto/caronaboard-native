@@ -21,22 +21,20 @@ export const getAllRides = () => {
 }
 
 export const saveRideOffer = (rideOffer: rideOfferType) => {
-  const userId = 's29iF96rLqRIj1O9WZ2p2BjR59J3' // firebase.auth().currentUser.uid
+  const userId = Firebase.auth().currentUser.uid
 
-  const profile = {
-    name: 'TEST',
-    contact: {
-      kind: 'Whatsapp',
-      value: '5566778899'
-    }
-  } // firebase.database().ref(`profiles/${userId}`).once("value")
-
-  return new Promise(resolve =>
-    Firebase.database()
-      .ref(`rides/${rideGroup}/${userId}`)
-      .push({rideOffer, profile})
-      .then(resolve)
-  )
+  Firebase.database()
+    .ref(`profiles/${userId}`)
+    .once('value')
+    .then(snapshot => {
+      const profile = snapshot.val()
+      return new Promise(resolve =>
+        Firebase.database()
+          .ref(`rides/${rideGroup}/${userId}`)
+          .push({rideOffer, profile})
+          .then(resolve)
+      )
+    })
 }
 
 export const saveRideRequest = (rideId) => {
