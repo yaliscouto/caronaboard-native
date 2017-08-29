@@ -10,6 +10,13 @@ type rideOfferType = {
   hour: string
 }
 
+type rideRequestType = {
+  origin: string,
+  destination: string,
+  days: string,
+  hour: string
+}
+
 export const getAllRides = () => {
   return new Promise(resolve => {
     Firebase.database()
@@ -49,7 +56,9 @@ export const saveRideOffer = (rideOffer: rideOfferType) => {
   )
 }
 
-export const saveRideRequest = (rideId) => {
+export const saveRideRequest = (rideRequest: rideRequestType) => {
+  const userId = 's29iF96rLqRIj1O9WZ2p2BjR59J3'
+
   const profile = {
     name: 'TEST',
     contact: {
@@ -60,8 +69,8 @@ export const saveRideRequest = (rideId) => {
 
   return new Promise(resolve => {
     Firebase.database()
-      .ref(`ridesRequests/${rideGroup}/${rideId}`)
-      .push({profile})
+      .ref(`ridesRequests/${rideGroup}/${userId}`)
+      .push({rideRequest, profile})
       .then(resolve)
   })
 }
